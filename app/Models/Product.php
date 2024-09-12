@@ -40,6 +40,10 @@ class Product extends Model
         return $product->update($this->prepare_data($request));
     }
 
+    final public function deleteProduct(Product $product){
+        return $product->forceDelete();
+    }
+
     final public function totalQuantitySum(){
         return $this->where('status',1)->sum('quantity');
     }

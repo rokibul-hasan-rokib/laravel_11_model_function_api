@@ -38,9 +38,9 @@ class ProductController extends Controller
                 DB::beginTransaction();
                 $product = (new Product())->storeProduct($request);
                 DB::commit();
-                return response()->json($product, 201);
+                return response()->json($product, status: 201);
             } catch (\Throwable $e) {
-                return redirect()->json(["message"=> ""]);
+                return redirect()->json(["message"=> "error"]);
 
              }
     }
@@ -63,24 +63,38 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Product $product)
     {
-        //
+        return response()->json($product);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Product $product)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $product = (new Product())->updateProduct($request,$product);
+            DB::commit();
+            return response()->json($product, 201);
+        } catch (\Throwable $th) {
+            return redirect()->json(["message"=> "error"]);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Product $product)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $product = (new Product())->deleteProduct($product);
+            DB::commit();
+            return response()->json(["message" => "Product Deleted Successfully"]);
+        } catch (\Throwable $th) {
+            return redirect()->json(["message"=> "error"]);
+        }
     }
 }
