@@ -35,4 +35,17 @@ class Product extends Model
           return self::query()->create($this->prepare_data($request));
     }
 
+    final public function updateProduct(Request $request, Builder|Model $product)
+    {
+        return $product->update($this->prepare_data($request));
+    }
+
+    final public function totalQuantitySum(){
+        return $this->where('status',1)->sum('quantity');
+    }
+
+    final public function totalPriceSum(){
+        return $this->where('status',1)->sum('price');
+    }
+
 }
