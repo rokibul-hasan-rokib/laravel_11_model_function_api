@@ -13,13 +13,21 @@ class SubCategory extends Model
 
     protected $fillable = ['name','category_id'];
 
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
     final public function prepare_data(Request $request){
         return [
               "name" => $request->input('name'),
               "category_id" => $request->input('category_id'),
         ];
     }
-
+    // protected function prepare_data(Request $request): array
+    // {
+    //     return $request->only(['category_id', 'name']);
+    // }
     public function createSubCategory(Request $request): Builder|Model
     {
         return self::query()->create($this->prepare_data(($request)));

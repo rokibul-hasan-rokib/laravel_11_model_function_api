@@ -22,16 +22,36 @@ class SubCategoryContorller extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(SubCategoryRequest $request)
+    // public function store(SubCategoryRequest $request)
+    // {
+    //     try {
+    //         DB::beginTransaction();
+    //         $subcategory = (new SubCategory())->createSubCategory($request);
+    //         DB::commit();
+    //         return response()->json($subcategory, status: 201);
+    //     } catch (\Throwable $th) {
+    //         return response()->json(["message" => $th->getMessage()]);
+    //     }
+    // }
+    public function store(Request $request)
     {
-        try {
-            DB::beginTransaction();
-            $subcategory = (new SubCategory())->createSubCategory($request);
-            DB::commit();
-            return response()->json($subcategory, status: 201);
-        } catch (\Throwable $th) {
-            return response()->json(["message" => $th->getMessage()]);
-        }
+        // Validate the incoming request
+        $validatedData = $request->validate([
+            'category_id' => 'required|exists:categories,id', // Ensures the category exists
+            'name' => 'required|string|max:255',             // Validate the name field
+        ]);
+
+        // Create a new subcategory
+        $subcategory = Subcategory::create([
+            'category_id' => $validatedData['category_id'],
+            'name' => $validatedData['name'],
+        ]);
+
+        // Return a success response
+        return response()->json([
+            'message' => 'Subcategory created successfully',
+            'subcategory' => $subcategory
+        ], 201);
     }
 
     /**
