@@ -23,7 +23,7 @@ return new class extends Migration
                   ->on('categories')
                   ->onDelete('cascade'); // Deletes subcategories if the parent category is deleted
         });
-    }
+    } 
 
     /**
      * Reverse the migrations.
