@@ -11,10 +11,7 @@ class Category extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-          "name",
-    ];
-
+    protected $guarded = [];
     final public function data_prepare(Request $request){
         return[
             "name" => $request->input('name'),
